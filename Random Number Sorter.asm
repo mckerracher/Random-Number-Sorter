@@ -8,31 +8,31 @@ INCLUDE Irvine32.inc
 ExitProcess proto,dwExitCode:dword
 
 .data
-introOne			BYTE		"Welcome to the Random Number Sorter!",0
-introTwo			BYTE		"Programmed by Joshua McKerracher",0
+introOne		BYTE		"Welcome to the Random Number Sorter!",0
+introTwo		BYTE		"Programmed by Joshua McKerracher",0
 divider			BYTE		"--------------------------------------------",0
 instructions1		BYTE		"This program makes a list of random numbers in the range [100 ... 999]. ",0
 instructions2		BYTE		"It then prints the list, sorts it, finds the median value, displays the median, ",0
 instructions3		BYTE		"and prints the sorted list. ",0
 instructions4		BYTE		"Please enter how many numbers you would like to see [15 ... 200]: ",0
-userNum			DWORD	?															; value the user enters
-MIN				EQU		15															; the lowest value that can be entered.
-MAX				EQU		200															; the highest value that can be entered.
-LO				EQU		100
-HI				EQU		999
+userNum			DWORD		?															; value the user enters
+MIN			EQU		15															; the lowest value that can be entered.
+MAX			EQU		200															; the highest value that can be entered.
+LO			EQU		100
+HI			EQU		999
 outOfBoundsMsg		BYTE		"Out of range! Please enter a number in the range [15 ... 200]: ",0
 goodByeMsg		BYTE		"Thanks for using the Random Number Sorter! Goodbye!",0
-MAX_SIZE			EQU		300
-list				DWORD	MAX_SIZE DUP(?)
-randomRangeVal		DWORD	?
+MAX_SIZE		EQU		300
+list			DWORD		MAX_SIZE DUP(?)
+randomRangeVal		DWORD		?
 fiveSpaces		BYTE		"     ",0
-unsorted			DWORD	0
-sorted			DWORD	1
+unsorted		DWORD		0
+sorted			DWORD		1
 printUnsortedMsg	BYTE		"The unsorted random numbers: ",0
 printSortedMsg		BYTE		"The sorted random numbers: ",0
-innerLoopCount		DWORD	?
-testNum			DWORD	0
-medianMsg			BYTE		"The median is: ",0
+innerLoopCount		DWORD		?
+testNum			DWORD		0
+medianMsg		BYTE		"The median is: ",0
 
 
 
@@ -72,7 +72,7 @@ main PROC
 	; Displays the list of unsorted random numbers.
 	push		OFFSET printSortedMsg
 	push		OFFSET printUnsortedMsg
-	push		unsorted											; used to print a message for the unsorted list.
+	push		unsorted										; used to print a message for the unsorted list.
 	push		OFFSET list										; Address of list as parameter for fillArray PROC.
 	push		userNum											; UserNum as a parameter for displayList PROC for loop control.
 	call		displayList
@@ -235,7 +235,7 @@ fillArray PROC
 	mov		ebp, esp
 
 	mov		ecx, [ebp + 8]										; moves userNum to ECX for loop control.
-	mov		edi, [ebp + 16]									; move addrress of list to the destination index register for use in loop.
+	mov		edi, [ebp + 16]										; move addrress of list to the destination index register for use in loop.
 
 	; Fills the first element of the array.
 	mov		eax, 900
@@ -278,7 +278,7 @@ sortList PROC
 	mov		ebp, esp
 
 	mov		esi, [ebp + 8]										; moves the offset of list (the array) to ESI
-	mov		ecx, [ebp + 16]									; moves userNum to ECX
+	mov		ecx, [ebp + 16]										; moves userNum to ECX
 	inc		ecx
 	
 	sub		esi, 4
@@ -314,7 +314,7 @@ sortySortTwo:
 	JE		loopyLoopSortySortOne
 	dec		edx										; Loop counter for the inner loop.
 	CMP		edx, 0								
-	JE		loopyLoopSortySortOne						; if all numbers have been checked, loop back to increment ESI.
+	JE		loopyLoopSortySortOne								; if all numbers have been checked, loop back to increment ESI.
 	JG		sortySortTwo
 
 swappySwap:
@@ -345,8 +345,8 @@ sortList ENDP
 exchangeElements PROC
 
 ; Puts high number into the lower slot
-	mov		eax, [edi]								; saves low number into EAX
-	mov		[esi], eax								; high number moved into lower slot.								
+	mov		eax, [edi]									; saves low number into EAX
+	mov		[esi], eax									; high number moved into lower slot.								
 
 	; Puts low number in the higher slot
 	mov		[edi], ebx
@@ -386,7 +386,7 @@ displayMedian PROC
 	mov		ebp, esp
 
 	;Checks userNum to see if it's even. (userNum = number of array elements).
-	mov		eax, [ebp + 8]								; userNum
+	mov		eax, [ebp + 8]										; userNum
 	mov		edx, 0
 	mov		ebx, 2
 	div		ebx
@@ -399,23 +399,23 @@ medianForEvenNum:
 	
 	; Gets the first middle number.
 	dec		eax
-	mov		edx, 4								; data size of each element in the array to edx
-	mul		edx									; multiply EDX*EAX (EAX has the quotient at this point)
-	mov		ebx, [ebp + 16]						; ebx gets the list address
-	mov		ecx, eax								; moves the value of quotient * data size to ecx 
-	mov		eax, [ebx + ecx]						; adds the offset of the first array position + the value of (quotient * data) and gets the value at that position and moves to eax.
-	mov		edx, eax								; Stores the first middle number in edx
+	mov		edx, 4											; data size of each element in the array to edx
+	mul		edx											; multiply EDX*EAX (EAX has the quotient at this point)
+	mov		ebx, [ebp + 16]										; ebx gets the list address
+	mov		ecx, eax										; moves the value of quotient * data size to ecx 
+	mov		eax, [ebx + ecx]									; adds the offset of the first array position + the value of (quotient * data) and gets the value at that position and moves to eax.
+	mov		edx, eax										; Stores the first middle number in edx
 
 	; Adds the second middle number to the first.
-	add		ecx, 4								; increment ecx by 4 to get the 2nd middle number
-	mov		eax, [ebx + ecx]						; move the value of the 2nd middle number to eax.
-	add		edx, eax								; add the two middle values.
+	add		ecx, 4											; increment ecx by 4 to get the 2nd middle number
+	mov		eax, [ebx + ecx]									; move the value of the 2nd middle number to eax.
+	add		edx, eax										; add the two middle values.
 
 	; Divide the sum of the two middle numbers by 2
-	mov		eax, edx								; moves the sum of the two middle values to be divided by 2.
-	mov		ebx, 2								; divisor
-	mov		edx, 0
-	div		ebx									; quotient (average) is now in eax.
+	mov		eax, edx										; moves the sum of the two middle values to be divided by 2.
+	mov		ebx, 2											; divisor
+	mov		edx, 0		
+	div		ebx											; quotient (average) is now in eax.
 
 	; Print the message and number.
 	mov		edx, [ebp + 12]
@@ -429,11 +429,11 @@ medianForEvenNum:
 	; Get the quotient and add 1 for the index of the median. The median of 7 ordered elements is the fourth position. (e.g., 7 / 2 = 3 -> 3 + 1 = 4)
 medianForOddNum:
 	
-	mov		edx, 4								; data size of each element in the array to edx
-	mul		edx									; multiply EDX*EAX (EAX has the quotient at this point)
-	mov		ebx, [ebp + 16]						; ebx gets the list address
-	mov		ecx, eax								; moves the value of quotient * data size to ecx 
-	mov		eax, [ebx + ecx]						; adds the offset of the first array position + the value of (quotient * data) and gets the value at that position and moves to eax.
+	mov		edx, 4											; data size of each element in the array to edx
+	mul		edx											; multiply EDX*EAX (EAX has the quotient at this point)
+	mov		ebx, [ebp + 16]										; ebx gets the list address
+	mov		ecx, eax										; moves the value of quotient * data size to ecx 
+	mov		eax, [ebx + ecx]									; adds the offset of the first array position + the value of (quotient * data) and gets the value at that position and moves to eax.
 
 	mov		edx, [ebp + 12]
 	call		WriteString
@@ -469,8 +469,8 @@ displayList PROC
 	mov		ebp, esp
 
 	mov		ecx, [ebp + 8]										; moves userNum to ECX for loop control.
-	mov		esi, [ebp + 12]									; move addrress of list to the destination index register for use in loop.
-	mov		edx, [ebp + 16]									; used to check if the sorted or unsorted list msg should be printed.
+	mov		esi, [ebp + 12]										; move addrress of list to the destination index register for use in loop.
+	mov		edx, [ebp + 16]										; used to check if the sorted or unsorted list msg should be printed.
 	mov		ebx, 0											; user for counting printed numbers.
 
 	; This checks if the sorted or unsorted message needs to be printed.
@@ -494,7 +494,7 @@ printyPrintLoop:
 	call		WriteDec
 	mov		edx, OFFSET fiveSpaces
 	call		WriteString
-	inc		ebx												; tracks printed numbers.
+	inc		ebx											; tracks printed numbers.
 	add		esi, 4
 
 	CMP		ebx, 10
